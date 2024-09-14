@@ -7,21 +7,19 @@ namespace Completed
     {
         public GameObject gameManager; //GameManager prefab to instantiate.
         public GameObject soundManager; //SoundManager prefab to instantiate.
+        [SerializeField] private Player _player;
+        
 
 
         private void Awake()
         {
-            //Check if a GameManager has already been assigned to static variable GameManager.instance or if it's still null
             if (GameManager.Instance == null)
-
-                //Instantiate gameManager prefab
                 Instantiate(gameManager);
 
-            //Check if a SoundManager has already been assigned to static variable GameManager.instance or if it's still null
             if (SoundManager.Instance == null)
-
-                //Instantiate SoundManager prefab
                 Instantiate(soundManager);
+
+            _player.SetInput(KeyboardInput KeyboardInput);
         }
     }
 }
