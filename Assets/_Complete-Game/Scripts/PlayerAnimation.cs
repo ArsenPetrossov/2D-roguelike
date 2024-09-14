@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Completed
 {
-    public class PlayerAnimation
+    public class PlayerAnimation : ICharacterAnimations
     {
         private Animator _animator;
 
@@ -10,15 +10,17 @@ namespace Completed
         {
             _animator = animator;
         }
-
-        public void SetPlayerChop()
-        {
-            _animator.SetTrigger("playerChop");
-        }
+        
 
         public void SetPlayerHit()
         {
             _animator.SetTrigger("playerHit");
+        }
+
+
+        public void SetAttack()
+        {
+            _animator.SetTrigger("playerChop");
         }
     }
 }

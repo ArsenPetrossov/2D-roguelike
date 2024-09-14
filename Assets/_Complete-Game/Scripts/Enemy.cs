@@ -11,10 +11,11 @@ namespace Completed
         public AudioClip attackSound2; //Second of two audio clips to play when attacking the player.
 
 
-        private Animator _animator; //Variable of type Animator to store a reference to the enemy's Animator component.
+       
         private Transform _target; //Transform to attempt to move toward each turn.
         private bool _skipMove; //Boolean to determine whether or not enemy should skip a turn or move this turn.
 
+        private ICharacterAttackAnimations _characterAnimations;
 
         //Start overrides the virtual Start function of the base class.
         protected override void Start()
@@ -24,7 +25,7 @@ namespace Completed
             GameManager.Instance.AddEnemyToList(this);
 
             //Get and store a reference to the attached Animator component.
-            _animator = GetComponent<Animator>();
+            _characterAnimations =new EnemyAnimation( GetComponent<Animator>());
 
             //Find the Player GameObject using it's tag and store a reference to its transform component.
             _target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -88,7 +89,7 @@ namespace Completed
             hitPlayer.LoseFood(playerDamage);
 
             //Set the attack trigger of animator to trigger Enemy attack animation.
-            _animator.SetTrigger("enemyAttack");
+            _characterAnimations.SetAttack();
 
             //Call the RandomizeSfx function of SoundManager passing in the two audio clips to choose randomly between.
             SoundManager.Instance.RandomizeSfx(attackSound1, attackSound2);

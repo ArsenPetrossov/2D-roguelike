@@ -26,7 +26,7 @@ namespace Completed
         [SerializeField] private AudioClip drinkSound2; //2 of 2 Audio clips to play when player collects a soda object.
         [SerializeField] private AudioClip gameOverSound; //Audio clip to play when player dies.
 
-        private PlayerAnimation _playerAnimation;
+        private ICharacterAnimations _playerAnimation;
         private int _food; //Used to store player food points total during level.
 
         private IGetInput _input;
@@ -97,7 +97,7 @@ namespace Completed
 
             //Set the attack trigger of the player's animation controller in order to play the player's attack animation.
 
-            _playerAnimation.SetPlayerChop();
+            _playerAnimation.SetAttack();
         }
 
         public void LoseFood(int loss)
