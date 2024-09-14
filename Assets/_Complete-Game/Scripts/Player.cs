@@ -26,27 +26,24 @@ namespace Completed
         [SerializeField] private AudioClip drinkSound2; //2 of 2 Audio clips to play when player collects a soda object.
         [SerializeField] private AudioClip gameOverSound; //Audio clip to play when player dies.
 
-        private Animator _animator; //Used to store a reference to the Player's animator component.
+        private PlayerAnimation _playerAnimation;
         private int _food; //Used to store player food points total during level.
 
         private IGetInput _input;
+
         public void SetInput(IGetInput input)
         {
             _input = input;
         }
+
         //Start overrides the Start function of MovingObject
         protected override void Start()
         {
-            //Get a component reference to the Player's animator component
-            _animator = GetComponent<Animator>();
+            _playerAnimation = new PlayerAnimation(GetComponent<Animator>());
 
-            //Get the current food point total stored in GameManager.instance between levels.
             _food = GameManager.Instance.playerFoodPoints;
 
-            //Set the foodText to reflect the current player food total.
             foodText.text = "Food: " + _food;
-
-            //Call the Start function of the MovingObject base class.
             base.Start();
         }
 
@@ -89,7 +86,7 @@ namespace Completed
             //Set the playersTurn boolean of GameManager to false now that players turn is over.
             GameManager.Instance.playersTurn = false;
         }
-        
+
         protected override void OnCantMove<T>(T component)
         {
             //Set hitWall to equal the component passed in as a parameter.
@@ -99,13 +96,15 @@ namespace Completed
             hitWall.DamageWall(wallDamage);
 
             //Set the attack trigger of the player's animation controller in order to play the player's attack animation.
-            _animator.SetTrigger("playerChop");
+
+            _playerAnimation.SetPlayerChop();
         }
 
         public void LoseFood(int loss)
         {
             //Set the trigger for the player animator to transition to the playerHit animation.
-            _animator.SetTrigger("playerHit");
+
+            _playerAnimation.SetPlayerHit();
 
             //Subtract lost food points from the players total.
             _food -= loss;
@@ -117,7 +116,6 @@ namespace Completed
             CheckIfGameOver();
         }
 
-       
 
         private void Restart()
         {

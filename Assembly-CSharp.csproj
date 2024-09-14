@@ -51,6 +51,7 @@
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\_Complete-Game\Scripts\TouchInput.cs" />
     <Compile Include="Assets\_Complete-Game\Scripts\Enemy.cs" />
+    <Compile Include="Assets\_Complete-Game\Scripts\PlayerAnimation.cs" />
     <Compile Include="Assets\_Complete-Game\Scripts\Player.cs" />
     <Compile Include="Assets\_Complete-Game\Scripts\GameManager.cs" />
     <Compile Include="Assets\_Complete-Game\Scripts\BoardManager.cs" />
