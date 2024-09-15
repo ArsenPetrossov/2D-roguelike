@@ -48,6 +48,7 @@
     <Compile Include="Assets\_Complete-Game\Scripts\ICharacterAttackAnimations.cs" />
     <Compile Include="Assets\_Complete-Game\Scripts\ICharacterAnimations.cs" />
     <Compile Include="Assets\_Complete-Game\Scripts\MovingObject.cs" />
+    <Compile Include="Assets\_Complete-Game\Scripts\Food.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\TutorialInfo.cs" />
     <Compile Include="Assets\_Complete-Game\Scripts\ICharacterHitAnimations.cs" />
     <Compile Include="Assets\_Complete-Game\Scripts\Loader.cs" />

@@ -27,7 +27,7 @@ namespace Completed
         [SerializeField] private AudioClip gameOverSound; //Audio clip to play when player dies.
 
         private ICharacterAnimations _playerAnimation;
-        private int _food; //Used to store player food points total during level.
+        private Food _food; //Used to store player food points total during level.
 
         private IGetInput _input;
 
@@ -41,7 +41,7 @@ namespace Completed
         {
             _playerAnimation = new PlayerAnimation(GetComponent<Animator>());
 
-            _food = GameManager.Instance.playerFoodPoints;
+            _food = new Food(GameManager.Instance.Config.PlayerFoodPoints);
 
             foodText.text = "Food: " + _food;
             base.Start();
@@ -64,7 +64,7 @@ namespace Completed
         protected override void AttemptMove<T>(int xDir, int yDir)
         {
             //Every time player moves, subtract from food points total.
-            _food--;
+            _food.Remove(1);
 
             //Update food text display to reflect current score.
             foodText.text = "Food: " + _food;
@@ -107,7 +107,7 @@ namespace Completed
             _playerAnimation.SetPlayerHit();
 
             //Subtract lost food points from the players total.
-            _food -= loss;
+            _food.Remove(loss);
 
             //Update the food display with the new total.
             foodText.text = "-" + loss + " Food: " + _food;
@@ -127,7 +127,7 @@ namespace Completed
         private void CheckIfGameOver()
         {
             //Check if food point total is less than or equal to zero.
-            if (_food <= 0)
+            if (_food.Amount <= 0)
             {
                 //Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
                 SoundManager.Instance.PlaySingle(gameOverSound);
@@ -143,7 +143,7 @@ namespace Completed
         private void OnDisable()
         {
             //When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.
-            GameManager.Instance.playerFoodPoints = _food;
+            GameManager.Instance.Config.PlayerFoodPoints = _food.Amount;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -162,7 +162,7 @@ namespace Completed
             else if (other.tag == "Food")
             {
                 //Add pointsPerFood to the players current food total.
-                _food += pointsPerFood;
+                _food.Add(pointsPerFood) ;
 
                 //Update foodText to represent current total and notify player that they gained points
                 foodText.text = "+" + pointsPerFood + " Food: " + _food;
@@ -178,7 +178,7 @@ namespace Completed
             else if (other.tag == "Soda")
             {
                 //Add pointsPerSoda to players food points total
-                _food += pointsPerSoda;
+                _food.Add(pointsPerSoda) ;
 
                 //Update foodText to represent current total and notify player that they gained points
                 foodText.text = "+" + pointsPerSoda + " Food: " + _food;

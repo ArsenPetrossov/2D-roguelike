@@ -7,12 +7,16 @@ namespace Completed
     using System.Collections.Generic; //Allows us to use Lists. 
     using UnityEngine.UI; //Allows us to use UI.
 
+    public class GameConfig
+    {
+        [field: SerializeField] public float LevelStartDelay { get; private set; } = 2f;
+        [field: SerializeField] public float TurnDelay { get; private set; } = 0.1f;
+        [field: SerializeField] public int PlayerFoodPoints { get; set; } = 100;
+    }
+
     public class GameManager : MonoBehaviour
     {
-        public float levelStartDelay = 2f; //Time to wait before starting level, in seconds.
-        public float turnDelay = 0.1f; //Delay between each Player turn.
-        public int playerFoodPoints = 100; //Starting value for Player food points.
-
+        [field: SerializeField] public GameConfig Config { get; private set; }
         public static GameManager
             Instance = null; //Static instance of GameManager which allows it to be accessed by any other script.
 
@@ -27,8 +31,10 @@ namespace Completed
         private List<Enemy> _enemies; //List of all Enemy units, used to issue them move commands.
         private bool _enemiesMoving; //Boolean to check if enemies are moving.
 
-        private bool
-            _doingSetup = true; //Boolean to check if we're setting up board, prevent Player from moving during setup.
+        private bool _doingSetup = true;
+
+
+       
 
 
         //Awake is always called before any Start functions
@@ -95,7 +101,7 @@ namespace Completed
             _levelImage.SetActive(true);
 
             //Call the HideLevelImage function with a delay in seconds of levelStartDelay.
-            Invoke("HideLevelImage", levelStartDelay);
+            Invoke("HideLevelImage", Config.LevelStartDelay);
 
             //Clear any Enemy objects in our List to prepare for next level.
             _enemies.Clear();
@@ -156,12 +162,12 @@ namespace Completed
             _enemiesMoving = true;
 
             //Wait for turnDelay seconds, defaults to .1 (100 ms).
-            yield return new WaitForSeconds(turnDelay);
+            yield return new WaitForSeconds(Config.TurnDelay);
 
             //If there are no enemies spawned (IE in first level):
             if (_enemies.Count == 0)
                 //Wait for turnDelay seconds between moves, replaces delay caused by enemies moving when there are none.
-                yield return new WaitForSeconds(turnDelay);
+                yield return new WaitForSeconds(Config.TurnDelay);
 
             //Loop through List of Enemy objects.
             for (var i = 0; i < _enemies.Count; i++)
