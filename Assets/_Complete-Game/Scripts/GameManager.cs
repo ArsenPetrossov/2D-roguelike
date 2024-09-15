@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
@@ -7,11 +8,12 @@ namespace Completed
     using System.Collections.Generic; //Allows us to use Lists. 
     using UnityEngine.UI; //Allows us to use UI.
 
+    [Serializable]
     public class GameConfig
     {
         [field: SerializeField] public float LevelStartDelay { get; private set; } = 2f;
         [field: SerializeField] public float TurnDelay { get; private set; } = 0.1f;
-        [field: SerializeField] public int PlayerFoodPoints { get; set; } = 100;
+        [field: SerializeField] public int PlayerFoodPoints { get; private set; } = 100;
     }
 
     public class GameManager : MonoBehaviour

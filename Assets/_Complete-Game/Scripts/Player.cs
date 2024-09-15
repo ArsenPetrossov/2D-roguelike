@@ -41,7 +41,10 @@ namespace Completed
         {
             _playerAnimation = new PlayerAnimation(GetComponent<Animator>());
 
-            _food = new Food(GameManager.Instance.Config.PlayerFoodPoints);
+
+            _food = FoodManager.Instance.Load();
+            if(_food == null)
+                _food = new Food(GameManager.Instance.Config.PlayerFoodPoints);
 
             foodText.text = "Food: " + _food;
             base.Start();
@@ -67,7 +70,7 @@ namespace Completed
             _food.Remove(1);
 
             //Update food text display to reflect current score.
-            foodText.text = "Food: " + _food;
+            foodText.text = "Food: " + _food.Amount;
 
             //Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
             base.AttemptMove<T>(xDir, yDir);
@@ -110,7 +113,7 @@ namespace Completed
             _food.Remove(loss);
 
             //Update the food display with the new total.
-            foodText.text = "-" + loss + " Food: " + _food;
+            foodText.text = "-" + loss + " Food: " + _food.Amount;
 
             //Check to see if game has ended.
             CheckIfGameOver();
@@ -143,7 +146,7 @@ namespace Completed
         private void OnDisable()
         {
             //When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.
-            GameManager.Instance.Config.PlayerFoodPoints = _food.Amount;
+            FoodManager.Instance.Save(_food); 
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -165,7 +168,7 @@ namespace Completed
                 _food.Add(pointsPerFood) ;
 
                 //Update foodText to represent current total and notify player that they gained points
-                foodText.text = "+" + pointsPerFood + " Food: " + _food;
+                foodText.text = "+" + pointsPerFood + " Food: " + _food.Amount;
 
                 //Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.
                 SoundManager.Instance.RandomizeSfx(eatSound1, eatSound2);
@@ -181,7 +184,7 @@ namespace Completed
                 _food.Add(pointsPerSoda) ;
 
                 //Update foodText to represent current total and notify player that they gained points
-                foodText.text = "+" + pointsPerSoda + " Food: " + _food;
+                foodText.text = "+" + pointsPerSoda + " Food: " + _food.Amount;
 
                 //Call the RandomizeSfx function of SoundManager and pass in two drinking sounds to choose between to play the drinking sound effect.
                 SoundManager.Instance.RandomizeSfx(drinkSound1, drinkSound2);
